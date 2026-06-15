@@ -26,7 +26,7 @@ CodeAlpha_Calculator/
 └── README.md
 
 ## Live Demo
-[Insert your Netlify / GitHub Pages link here]
+https://codealpha-calculatorpro.netlify.app/
 
 ## Author
 Pavani
