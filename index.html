@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Pro Ultra - Intelligent Computational Engine</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="calculator-app-container">
+        <div class="calculator-wrapper">
+            <div class="calc-header">
+                <div class="brand-logo">NEXUS<span>PRO ULTRA</span></div>
+                <div class="header-controls">
+                    <button class="icon-toggle-btn" id="voice-trigger" title="Voice Input Mode"><i class="fas fa-microphone"></i></button>
+                    <button class="icon-toggle-btn" id="hotkey-toggle" title="Toggle Keyboard Overlay"><i class="fas fa-keyboard"></i></button>
+                    <button class="icon-toggle-btn" id="history-toggle" title="Toggle Calculation History"><i class="fas fa-history"></i></button>
+                    <button class="mode-indicator" id="angle-toggle">DEG</button>
+                    <button class="theme-toggle-btn" id="theme-switcher"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+
+            <div class="calc-display-panel">
+                <div class="voice-status-pill" id="voice-status">Listening...</div>
+                <div class="memory-badge" id="mem-indicator">M</div>
+                <div class="expression-row" id="live-expression"></div>
+                <div class="result-row" id="primary-output">0</div>
+            </div>
+
+            <div class="module-navbar">
+                <button class="nav-tab active" data-target="math-panel"><i class="fas fa-calculator"></i> Math</button>
+                <button class="nav-tab" data-target="matrix-panel"><i class="fas fa-th-large"></i> Matrix</button>
+                <button class="nav-tab" data-target="unit-panel"><i class="fas fa-ruler-combined"></i> Units</button>
+                <button class="nav-tab" data-target="graph-panel"><i class="fas fa-chart-line"></i> Graph</button>
+            </div>
+
+            <div class="tab-panel active" id="math-panel">
+                <div class="currency-tray">
+                    <div class="tray-title">Live Exchange Engine</div>
+                    <div class="currency-selectors">
+                        <select id="currency-from">
+                            <option value="USD" selected>USD ($) - United States</option>
+                            <option value="INR">INR (₹) - India</option>
+                            <option value="KRW">KRW (₩) - South Korea</option>
+                            <option value="JPY">JPY (¥) - Japan</option>
+                            <option value="AED">AED (د.إ) - UAE</option>
+                            <option value="EUR">EUR (€) - Eurozone</option>
+                            <option value="GBP">GBP (£) - United Kingdom</option>
+                            <option value="CAD">CAD (C$) - Canada</option>
+                            <option value="AUD">AUD (A$) - Australia</option>
+                            <option value="CNY">CNY (¥) - China</option>
+                        </select>
+                        <i class="fas fa-arrow-right-long exchange-arrow"></i>
+                        <select id="currency-to">
+                            <option value="INR" selected>INR (₹) - India</option>
+                            <option value="USD">USD ($) - United States</option>
+                            <option value="KRW">KRW (₩) - South Korea</option>
+                            <option value="JPY">JPY (¥) - Japan</option>
+                            <option value="AED">AED (د.إ) - UAE</option>
+                            <option value="EUR">EUR (€) - Eurozone</option>
+                            <option value="GBP">GBP (£) - United Kingdom</option>
+                            <option value="CAD">CAD (C$) - Canada</option>
+                            <option value="AUD">AUD (A$) - Australia</option>
+                            <option value="CNY">CNY (¥) - China</option>
+                        </select>
+                    </div>
+                    <button class="btn-convert" id="convert-trigger">Convert Present Display Value</button>
+                </div>
+
+                <div class="memory-strip">
+                    <button class="mem-btn" data-action="mc">MC</button>
+                    <button class="mem-btn" data-action="mr">MR</button>
+                    <button class="mem-btn" data-action="m+">M+</button>
+                    <button class="mem-btn" data-action="m-">M-</button>
+                    <button class="mem-btn" data-action="ms">MS</button>
+                </div>
+
+                <div class="calc-keypad">
+                    <button class="btn drawer-toggle-btn grid-span-four" id="scientific-toggle" type="button">
+                        <span class="toggle-text">Show Scientific Functions</span>
+                        <i class="fas fa-chevron-down" style="margin-left: 8px; pointer-events: none;"></i>
+                    </button>
+
+                    <div class="scientific-drawer hidden-drawer" id="scientific-panel-wrapper">
+                        <button class="btn scientific-modifier" data-action="sin">sin<span class="hotkey">S</span></button>
+                        <button class="btn scientific-modifier" data-action="cos">cos<span class="hotkey">O</span></button>
+                        <button class="btn scientific-modifier" data-action="tan">tan<span class="hotkey">T</span></button>
+                        <button class="btn scientific-modifier" data-input="pi">π<span class="hotkey">P</span></button>
+
+                        <button class="btn scientific-modifier" data-action="log">log<span class="hotkey">L</span></button>
+                        <button class="btn scientific-modifier" data-action="ln">ln<span class="hotkey">N</span></button>
+                        <button class="btn scientific-modifier" data-action="exp">eˣ<span class="hotkey">X</span></button>
+                        <button class="btn scientific-modifier" data-input="e">e<span class="hotkey">E</span></button>
+
+                        <button class="btn scientific-modifier" data-action="sqrt">√<span class="hotkey">Q</span></button>
+                        <button class="btn scientific-modifier" data-action="square">x²<span class="hotkey">U</span></button>
+                        <button class="btn scientific-modifier" data-input="(">(<span class="hotkey">(</span></button>
+                        <button class="btn scientific-modifier" data-input=")">)<span class="hotkey">)</span></button>
+                    </div>
+
+                    <button class="btn action-modifier" id="clear-core" data-action="clear">AC<span class="hotkey">Esc</span></button>
+                    <button class="btn action-modifier" data-action="backspace"><i class="fas fa-backspace" style="pointer-events: none;"></i><span class="hotkey">⌫</span></button>
+                    <button class="btn action-modifier" data-input="%">%<span class="hotkey">%</span></button>
+                    <button class="btn operator-modifier" data-input="/">÷<span class="hotkey">/</span></button>
+
+                    <button class="btn" data-input="7">7<span class="hotkey">7</span></button>
+                    <button class="btn" data-input="8">8<span class="hotkey">8</span></button>
+                    <button class="btn" data-input="9">9<span class="hotkey">9</span></button>
+                    <button class="btn operator-modifier" data-input="*">×<span class="hotkey">*</span></button>
+
+                    <button class="btn" data-input="4">4<span class="hotkey">4</span></button>
+                    <button class="btn" data-input="5">5<span class="hotkey">5</span></button>
+                    <button class="btn" data-input="6">6<span class="hotkey">6</span></button>
+                    <button class="btn operator-modifier" data-input="-">-<span class="hotkey">-</span></button>
+
+                    <button class="btn" data-input="1">1<span class="hotkey">1</span></button>
+                    <button class="btn" data-input="2">2<span class="hotkey">2</span></button>
+                    <button class="btn" data-input="3">3<span class="hotkey">3</span></button>
+                    <button class="btn operator-modifier" data-input="+">+<span class="hotkey">+</span></button>
+
+                    <button class="btn grid-span-two" data-input="0">0<span class="hotkey">0</span></button>
+                    <button class="btn" data-input=".">.<span class="hotkey">.</span></button>
+                    <button class="btn compute-trigger" id="evaluate-trigger">=<span class="hotkey">↵</span></button>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="matrix-panel">
+                <div class="matrix-grid-box">
+                    <div class="matrix-title">Matrix A (2 × 2)</div>
+                    <div class="matrix-inputs">
+                        <input type="number" id="m11" value="1">
+                        <input type="number" id="m12" value="2">
+                        <input type="number" id="m21" value="3">
+                        <input type="number" id="m22" value="4">
+                    </div>
+                </div>
+                <div class="matrix-actions">
+                    <button class="sub-action-btn" id="matrix-det">Determinant</button>
+                    <button class="sub-action-btn" id="matrix-trans">Transpose</button>
+                    <button class="sub-action-btn" id="matrix-inv">Inverse</button>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="unit-panel">
+                <div class="unit-converter-box">
+                    <select id="unit-type-select">
+                        <option value="temp">Temperature</option>
+                        <option value="data">Data Size</option>
+                        <option value="speed">Velocity Speed</option>
+                    </select>
+                    <div class="unit-row">
+                        <input type="number" id="unit-input-val" value="1">
+                        <select id="unit-from-select"></select>
+                    </div>
+                    <div class="unit-row-divider"><i class="fas fa-arrows-alt-v"></i></div>
+                    <div class="unit-row">
+                        <div class="unit-output-mirror" id="unit-output-val">0.00</div>
+                        <select id="unit-to-select"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="graph-panel">
+                <div class="graph-header-controls">
+                    <input type="text" id="graph-function" value="x * x" placeholder="e.g. sin(x) or x * x">
+                    <button id="plot-trigger">Plot</button>
+                </div>
+                <div class="canvas-holder">
+                    <canvas id="graphCanvas" width="340" height="260"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-sidebar" id="history-sidebar">
+            <div class="sidebar-header">
+                <h3>Calculation Tape</h3>
+                <button id="clear-tape-btn" title="Clear All History"><i class="fas fa-trash-can"></i></button>
+            </div>
+            <div class="history-stream" id="history-stream-box">
+                <div class="empty-state">No past entries found.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

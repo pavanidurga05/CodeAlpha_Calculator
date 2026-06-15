@@ -1,0 +1,761 @@
+/* ==========================================================================
+   THEME MATRICES & COLOR PALETTES
+   ========================================================================== */
+:root[data-theme="dark"] {
+    --bg-gradient: linear-gradient(135deg, #090d16, #111827);
+    --calc-bg: rgba(17, 24, 39, 0.75);
+    --screen-bg: rgba(3, 7, 18, 0.6);
+    --text-main: #f9fafb;
+    --text-muted: #4b5563;
+    --text-accent: #9ca3af;
+    --btn-num: rgba(255, 255, 255, 0.03);
+    --btn-num-hover: rgba(255, 255, 255, 0.08);
+    --btn-operator: rgba(245, 158, 11, 0.12);
+    --btn-operator-text: #f59e0b;
+    --btn-action: rgba(156, 163, 175, 0.08);
+    --btn-action-text: #e5e7eb;
+    --btn-equals: linear-gradient(135deg, #f59e0b, #d97706);
+    --border-glow: rgba(255, 255, 255, 0.06);
+    --shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.7);
+}
+
+:root[data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    --calc-bg: rgba(255, 255, 255, 0.85);
+    --screen-bg: rgba(243, 244, 246, 0.9);
+    --text-main: #111827;
+    --text-muted: #9ca3af;
+    --text-accent: #4b5563;
+    --btn-num: rgba(17, 24, 39, 0.03);
+    --btn-num-hover: rgba(17, 24, 39, 0.07);
+    --btn-operator: rgba(217, 119, 6, 0.12);
+    --btn-operator-text: #d97706;
+    --btn-action: rgba(75, 85, 99, 0.08);
+    --btn-action-text: #1f2937;
+    --btn-equals: linear-gradient(135deg, #d97706, #b45309);
+    --border-glow: rgba(17, 24, 39, 0.05);
+    --shadow: 0 40px 80px -20px rgba(17, 24, 39, 0.15);
+}
+
+/* ==========================================================================
+   GLOBAL APP FRAMEWORK STYLING
+   ========================================================================== */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    user-select: none; 
+    -webkit-user-select: none; 
+}
+
+body { 
+    min-height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background: var(--bg-gradient); 
+    font-family: 'Inter', sans-serif; 
+    transition: background 0.4s ease; 
+    padding: 24px; 
+}
+
+.calculator-app-container { 
+    display: flex; 
+    gap: 24px; 
+    align-items: stretch; 
+    max-width: 760px; 
+    width: 100%; 
+}
+
+.calculator-wrapper { 
+    flex: 1; 
+    max-width: 410px; 
+    background: var(--calc-bg); 
+    backdrop-filter: blur(30px); 
+    -webkit-backdrop-filter: blur(30px); 
+    border: 1px solid var(--border-glow); 
+    border-radius: 40px; 
+    padding: 28px; 
+    box-shadow: var(--shadow); 
+}
+
+/* Header & Controls Matrix */
+.calc-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 16px; 
+}
+
+.brand-logo { 
+    color: var(--text-main); 
+    font-weight: 700; 
+    font-size: 0.85rem; 
+    letter-spacing: 2px; 
+}
+
+.brand-logo span { 
+    color: var(--btn-operator-text); 
+    font-size: 0.65rem; 
+    font-weight: 500; 
+    margin-left: 4px; 
+    background: var(--btn-operator); 
+    padding: 2px 6px; 
+    border-radius: 6px; 
+}
+
+.header-controls { 
+    display: flex; 
+    align-items: center; 
+    gap: 6px; 
+}
+
+.icon-toggle-btn, .theme-toggle-btn { 
+    background: none; 
+    border: none; 
+    color: var(--text-accent); 
+    cursor: pointer; 
+    font-size: 1rem; 
+    width: 34px; 
+    height: 34px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: all 0.2s; 
+}
+
+.icon-toggle-btn:hover, .theme-toggle-btn:hover, .icon-toggle-btn.active { 
+    background: var(--btn-num-hover); 
+    color: var(--text-main); 
+}
+
+.icon-toggle-btn.active-pulse { 
+    background: rgba(239, 68, 68, 0.15); 
+    color: #ef4444; 
+    animation: pulseMic 1.5s infinite; 
+}
+
+@keyframes pulseMic { 
+    0%, 100% { transform: scale(1); } 
+    50% { transform: scale(1.06); } 
+}
+
+.mode-indicator { 
+    background: var(--btn-action); 
+    border: none; 
+    color: var(--btn-operator-text); 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    padding: 6px 12px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    border: 1px solid var(--border-glow); 
+}
+
+/* Monitor Screen Viewports */
+.calc-display-panel { 
+    background: var(--screen-bg); 
+    border-radius: 28px; 
+    padding: 24px; 
+    min-height: 135px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-end; 
+    align-items: flex-end; 
+    margin-bottom: 16px; 
+    border: 1px solid var(--border-glow); 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.voice-status-pill { 
+    position: absolute; 
+    left: 24px; 
+    top: 24px; 
+    font-size: 0.7rem; 
+    font-weight: 600; 
+    color: #ffffff; 
+    background: #ef4444; 
+    padding: 4px 10px; 
+    border-radius: 20px; 
+    display: none; 
+}
+
+.memory-badge { 
+    position: absolute; 
+    left: 24px; 
+    bottom: 24px; 
+    font-size: 0.75rem; 
+    font-weight: 700; 
+    color: var(--btn-operator-text); 
+    background: var(--btn-operator); 
+    padding: 2px 6px; 
+    border-radius: 6px; 
+    display: none; 
+}
+
+.expression-row { 
+    color: var(--text-muted); 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 1.1rem; 
+    min-height: 28px; 
+    width: 100%; 
+    text-align: right; 
+    white-space: nowrap; 
+    overflow-x: auto; 
+    margin-bottom: 4px; 
+}
+
+.result-row { 
+    color: var(--text-main); 
+    font-size: 3rem; 
+    font-weight: 500; 
+    line-height: 1.1; 
+    width: 100%; 
+    text-align: right; 
+    white-space: nowrap; 
+    overflow-x: auto; 
+    letter-spacing: -1px; 
+}
+
+.expression-row::-webkit-scrollbar, .result-row::-webkit-scrollbar { 
+    display: none; 
+}
+
+/* ==========================================================================
+   MODULE INTERACTIVE NAVIGATION TAB STRIP SHEET
+   ========================================================================== */
+.module-navbar { 
+    display: flex; 
+    background: var(--screen-bg); 
+    border: 1px solid var(--border-glow); 
+    border-radius: 14px; 
+    padding: 4px; 
+    margin-bottom: 18px; 
+    gap: 4px; 
+}
+
+.nav-tab { 
+    flex: 1; 
+    border: none; 
+    background: none; 
+    color: var(--text-accent); 
+    padding: 8px 0; 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+    border-radius: 10px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 6px; 
+    transition: all 0.2s; 
+}
+
+.nav-tab:hover { 
+    color: var(--text-main); 
+    background: var(--btn-num-hover); 
+}
+
+.nav-tab.active { 
+    background: var(--calc-bg); 
+    color: var(--btn-operator-text); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+}
+
+.tab-panel { 
+    display: none; 
+}
+
+.tab-panel.active { 
+    display: block; 
+    animation: fadeInPanel 0.3s ease-out; 
+}
+
+@keyframes fadeInPanel { 
+    from { opacity: 0; transform: translateY(4px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* ==========================================================================
+   SUB-PANEL STYLINGS (MATRIX, UNIT CONVERTER, CANVASES)
+   ========================================================================== */
+/* Matrix Module Component Layouts */
+.matrix-grid-box { 
+    background: rgba(148,163,184,0.03); 
+    border: 1px solid var(--border-glow); 
+    border-radius: 20px; 
+    padding: 16px; 
+    text-align: center; 
+    margin-bottom: 16px; 
+}
+
+.matrix-title { 
+    font-size: 0.8rem; 
+    font-weight: 700; 
+    color: var(--text-accent); 
+    margin-bottom: 14px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
+}
+
+.matrix-inputs { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; 
+    max-width: 160px; 
+    margin: 0 auto; 
+}
+
+.matrix-inputs input { 
+    width: 100%; 
+    background: var(--screen-bg); 
+    border: 1px solid var(--border-glow); 
+    text-align: center; 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 1.1rem; 
+    color: var(--text-main); 
+    padding: 10px 0; 
+    border-radius: 12px; 
+    outline: none; 
+}
+
+.matrix-actions { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 8px; 
+}
+
+.sub-action-btn { 
+    background: var(--btn-action); 
+    border: 1px solid var(--border-glow); 
+    color: var(--text-main); 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    padding: 12px 0; 
+    border-radius: 14px; 
+    cursor: pointer; 
+    transition: all 0.2s; 
+}
+
+.sub-action-btn:hover { 
+    background: var(--btn-num-hover); 
+}
+
+/* Dimensional Unit Converter Modules */
+.unit-converter-box { 
+    background: rgba(148,163,184,0.03); 
+    border: 1px solid var(--border-glow); 
+    border-radius: 20px; 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 14px; 
+}
+
+#unit-type-select { 
+    width: 100%; 
+    background: var(--calc-bg); 
+    border: 1px solid var(--border-glow); 
+    color: var(--btn-operator-text); 
+    font-weight: 600; 
+    padding: 10px; 
+    border-radius: 12px; 
+    outline: none; 
+    cursor: pointer; 
+}
+
+.unit-row { 
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+}
+
+.unit-row input, .unit-output-mirror { 
+    flex: 1.2; 
+    background: var(--screen-bg); 
+    border: 1px solid var(--border-glow); 
+    color: var(--text-main); 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 1.1rem; 
+    padding: 10px; 
+    border-radius: 12px; 
+    outline: none; 
+}
+
+.unit-output-mirror { 
+    min-height: 44px; 
+    display: flex; 
+    align-items: center; 
+    font-weight: 500; 
+    background: rgba(0,0,0,0.05); 
+}
+
+.unit-row select { 
+    flex: 1; 
+    background: var(--calc-bg); 
+    border: 1px solid var(--border-glow); 
+    color: var(--text-main); 
+    padding: 10px; 
+    border-radius: 12px; 
+    outline: none; 
+    cursor: pointer; 
+}
+
+.unit-row-divider { 
+    text-align: center; 
+    color: var(--text-muted); 
+    font-size: 0.9rem; 
+}
+
+/* Interactive Plotter Layouts */
+.graph-header-controls { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 14px; 
+}
+
+#graph-function { 
+    flex: 1; 
+    background: var(--screen-bg); 
+    border: 1px solid var(--border-glow); 
+    color: var(--text-main); 
+    font-family: 'JetBrains Mono', monospace; 
+    padding: 12px 16px; 
+    border-radius: 14px; 
+    outline: none; 
+    font-size: 0.95rem; 
+}
+
+#plot-trigger { 
+    background: var(--btn-equals); 
+    color: #fff; 
+    border: none; 
+    font-weight: 600; 
+    padding: 0 20px; 
+    border-radius: 14px; 
+    cursor: pointer; 
+}
+
+.canvas-holder { 
+    background: #fff; 
+    border-radius: 20px; 
+    overflow: hidden; 
+    display: flex; 
+    justify-content: center; 
+    border: 1px solid var(--border-glow); 
+}
+
+/* ==========================================================================
+   FINANCIAL EXCHANGE TRAY FIXED DESIGN SYSTEM
+   ========================================================================== */
+.currency-tray { 
+    background: rgba(148, 163, 184, 0.04); 
+    border: 1px dashed var(--border-glow); 
+    border-radius: 20px; 
+    padding: 14px; 
+    margin-bottom: 16px; 
+}
+
+.tray-title { 
+    font-size: 0.7rem; 
+    font-weight: 700; 
+    color: var(--text-accent); 
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+    margin-bottom: 8px; 
+}
+
+.currency-selectors { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    margin-bottom: 10px; 
+    width: 100%; 
+}
+
+.currency-selectors select { 
+    flex: 1; 
+    min-width: 0; 
+    background: var(--screen-bg); 
+    border: 1px solid var(--border-glow); 
+    color: var(--text-main); 
+    padding: 8px 6px; 
+    border-radius: 10px; 
+    outline: none; 
+    font-size: 0.8rem; 
+    cursor: pointer; 
+    text-overflow: ellipsis; 
+}
+
+.exchange-arrow { 
+    color: var(--btn-operator-text); 
+}
+
+.btn-convert { 
+    width: 100%; 
+    background: var(--btn-action); 
+    border: 1px solid var(--border-glow); 
+    color: var(--text-main); 
+    font-size: 0.8rem; 
+    font-weight: 600; 
+    padding: 8px 0; 
+    border-radius: 10px; 
+    cursor: pointer; 
+}
+
+.memory-strip { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 6px; 
+    margin-bottom: 16px; 
+}
+
+.mem-btn { 
+    background: none; 
+    border: none; 
+    color: var(--text-accent); 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    padding: 8px 0; 
+    cursor: pointer; 
+    border-radius: 10px; 
+    transition: all 0.2s; 
+}
+
+.mem-btn:hover { 
+    background: var(--btn-num-hover); 
+    color: var(--text-main); 
+}
+
+/* ==========================================================================
+   DYNAMIC COMPACT KEYPAD MATRIX & DROPDOWN DRAWER SYSTEM
+   ========================================================================== */
+.calc-keypad { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px; 
+}
+
+.grid-span-two { 
+    grid-column: span 2; 
+}
+
+.grid-span-four {
+    grid-column: span 4;
+}
+
+/* Expandable Scientific Core Trigger Component */
+.drawer-toggle-btn {
+    background: rgba(148, 163, 184, 0.05);
+    border: 1px solid var(--border-glow);
+    color: var(--text-accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    height: 38px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+}
+
+.drawer-toggle-btn:hover {
+    color: var(--btn-operator-text);
+    background: var(--btn-num-hover);
+}
+
+/* Folding Drawer Transition Elements */
+.scientific-drawer {
+    grid-column: span 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-height: 500px; /* High bounding frame value limits animation limits */
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.25s ease, 
+                margin-bottom 0.35s ease;
+}
+
+/* Collapsed Hidden State Flag Styles */
+.scientific-drawer.hidden-drawer {
+    max-height: 0 !important;
+    opacity: 0 !important;
+    margin-bottom: 0 !important;
+    pointer-events: none;
+}
+
+/* General Layout Button Parameters */
+.btn { 
+    border: none; 
+    outline: none; 
+    background: var(--btn-num); 
+    color: var(--text-main); 
+    font-size: 1.3rem; 
+    font-weight: 500; 
+    height: 52px; 
+    border-radius: 16px; 
+    cursor: pointer; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    transition: all 0.15s cubic-bezier(0.2, 0, 0, 1); 
+    position: relative; 
+}
+
+.btn:hover { 
+    background: var(--btn-num-hover); 
+    transform: translateY(-1px); 
+}
+
+.btn:active, .btn.keyboard-active { 
+    transform: scale(0.95) translateY(0); 
+}
+
+.btn.scientific-modifier { 
+    font-size: 0.95rem; 
+    color: var(--text-accent); 
+    background: rgba(148, 163, 184, 0.02); 
+    font-family: 'JetBrains Mono', monospace; 
+}
+
+.btn.action-modifier { 
+    background: var(--btn-action); 
+    color: var(--btn-action-text); 
+    font-size: 1.15rem; 
+}
+
+.btn.operator-modifier { 
+    background: var(--btn-operator); 
+    color: var(--btn-operator-text); 
+    font-weight: 600; 
+}
+
+.btn.compute-trigger { 
+    background: var(--btn-equals); 
+    color: #ffffff; 
+    font-weight: 600; 
+}
+
+.btn i { 
+    pointer-events: none; 
+}
+
+/* Accessible Pro Keyboard Virtual Badges Overlay Mode */
+.hotkey { 
+    position: absolute; 
+    right: 6px; 
+    top: 4px; 
+    font-size: 0.55rem; 
+    font-weight: 700; 
+    font-family: 'JetBrains Mono', monospace; 
+    color: var(--text-muted); 
+    background: var(--screen-bg); 
+    padding: 1px 4px; 
+    border-radius: 4px; 
+    border: 1px solid var(--border-glow); 
+    opacity: 0; 
+    pointer-events: none; 
+    transition: opacity 0.2s; 
+}
+
+.calculator-wrapper.show-hotkeys .hotkey { 
+    opacity: 1; 
+}
+
+/* ==========================================================================
+   PERSISTENT TAPE HISTORY SIDEBAR DISPLAY
+   ========================================================================== */
+.history-sidebar { 
+    width: 280px; 
+    background: var(--calc-bg); 
+    backdrop-filter: blur(30px); 
+    -webkit-backdrop-filter: blur(30px); 
+    border: 1px solid var(--border-glow); 
+    border-radius: 40px; 
+    padding: 24px; 
+    box-shadow: var(--shadow); 
+    display: flex; 
+    flex-direction: column; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+.history-sidebar.hidden { 
+    display: none; 
+}
+
+.sidebar-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+    color: var(--text-main); 
+}
+
+.sidebar-header h3 { 
+    font-size: 1rem; 
+    font-weight: 600; 
+}
+
+#clear-tape-btn { 
+    background: none; 
+    border: none; 
+    color: var(--text-accent); 
+    cursor: pointer; 
+    font-size: 0.95rem; 
+}
+
+#clear-tape-btn:hover { 
+    color: #ef4444; 
+}
+
+.history-stream { 
+    flex: 1; 
+    overflow-y: auto; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 16px; 
+    padding-right: 4px; 
+}
+
+.history-stream::-webkit-scrollbar { 
+    width: 4px; 
+}
+
+.history-stream::-webkit-scrollbar-thumb { 
+    background: var(--border-glow); 
+    border-radius: 4px; 
+}
+
+.empty-state { 
+    color: var(--text-muted); 
+    font-size: 0.85rem; 
+    text-align: center; 
+    margin-top: 40px; 
+}
+
+.tape-item { 
+    text-align: right; 
+    border-bottom: 1px solid var(--border-glow); 
+    padding-bottom: 10px; 
+    cursor: pointer; 
+}
+
+.tape-expr { 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 0.85rem; 
+    color: var(--text-accent); 
+    margin-bottom: 4px; 
+}
+
+.tape-res { 
+    font-size: 1.2rem; 
+    font-weight: 600; 
+    color: var(--text-main); 
+}
+
+.tape-item:hover .tape-res { 
+    color: var(--btn-operator-text); 
+}
