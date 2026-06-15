@@ -85,29 +85,32 @@ body {
     justify-content: space-between; 
     align-items: center; 
     margin-bottom: 16px; 
+    width: 100%;
 }
 
 .brand-logo { 
     color: var(--text-main); 
     font-weight: 700; 
-    font-size: 0.85rem; 
-    letter-spacing: 2px; 
+    font-size: 0.8rem; 
+    letter-spacing: 1.5px; 
+    white-space: nowrap;
 }
 
 .brand-logo span { 
-    color: var(--btn-operator-text); 
-    font-size: 0.65rem; 
-    font-weight: 500; 
-    margin-left: 4px; 
-    background: var(--btn-operator); 
-    padding: 2px 6px; 
-    border-radius: 6px; 
+    color: #ffffff; 
+    font-size: 0.6rem; 
+    font-weight: 600; 
+    margin-left: 5px; 
+    background: linear-gradient(135deg, #f59e0b, #d97706); 
+    padding: 2px 5px; 
+    border-radius: 5px; 
 }
 
 .header-controls { 
     display: flex; 
     align-items: center; 
-    gap: 6px; 
+    gap: 4px; 
+    flex-shrink: 0;
 }
 
 .icon-toggle-btn, .theme-toggle-btn { 
@@ -449,7 +452,7 @@ body {
 }
 
 /* ==========================================================================
-   FINANCIAL EXCHANGE TRAY FIXED DESIGN SYSTEM
+   FINANCIAL EXCHANGE TRAY DESIGN SYSTEM
    ========================================================================== */
 .currency-tray { 
     background: rgba(148, 163, 184, 0.04); 
@@ -571,7 +574,7 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    max-height: 500px; /* High bounding frame value limits animation limits */
+    max-height: 500px; 
     opacity: 1;
     overflow: hidden;
     transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
@@ -758,4 +761,37 @@ body {
 
 .tape-item:hover .tape-res { 
     color: var(--btn-operator-text); 
+}
+
+/* ==========================================================================
+   RESPONSIVE MOBILE VIEWPORT OVERRIDES (Max Width: 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+        align-items: flex-start; 
+    }
+
+    .calculator-app-container {
+        flex-direction: column; 
+        gap: 16px;
+        max-width: 100%;
+    }
+
+    .calculator-wrapper {
+        max-width: 100%; 
+        width: 100%;
+        padding: 20px; 
+        border-radius: 28px;
+    }
+
+    .history-sidebar {
+        width: 100%;
+        max-height: 250px; 
+        border-radius: 24px;
+    }
+    
+    .result-row {
+        font-size: 2.4rem; 
+    }
 }

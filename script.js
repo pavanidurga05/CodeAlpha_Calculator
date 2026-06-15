@@ -1,7 +1,8 @@
+
 /**
  * ==========================================================================
- * NEXUS PRO ULTRA MASTER SOFTWARE SYSTEMS ENGINE
- * Combined Feature Modules: Math, Voice, Tape, Currency, Matrix, Unit, Canvas
+ * NEXUS PRO ULTRA: INTELLIGENT COMPUTATIONAL ENGINE
+ * Unified Feature Modules: Math, Voice, Tape, Currency, Matrix, Unit, Canvas
  * ==========================================================================
  */
 
@@ -143,17 +144,65 @@ class EngineController {
     }
 
     /**
-     * SYSTEM MODULE FEATURE 1: WEB VOICE PIPELINE
+     * MOBILE-OPTIMIZED VOICE PIPELINE SYSTEM MODULE
      */
     initVoiceEngine() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) return;
+        const SpeechRecognition = window.SpeechRecognition || 
+                                  window.webkitSpeechRecognition || 
+                                  window.mozSpeechRecognition || 
+                                  window.msSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            console.warn("Speech API missing inside this mobile container platform.");
+            return;
+        }
+
         this.recognition = new SpeechRecognition();
-        this.recognition.onstart = () => { this.voiceStatus.style.display = 'block'; this.voiceBtn.classList.add('active-pulse'); };
-        this.recognition.onend = () => { this.voiceStatus.style.display = 'none'; this.voiceBtn.classList.remove('active-pulse'); };
+        
+        this.recognition.continuous = false; 
+        this.recognition.interimResults = false; 
+        this.recognition.lang = 'en-US'; 
+        
+        this.recognition.onstart = () => { 
+            this.voiceStatus.style.display = 'block'; 
+            this.voiceStatus.textContent = "Listening closely...";
+            this.voiceBtn.classList.add('active-pulse'); 
+        };
+        
+        this.recognition.onend = () => { 
+            this.voiceStatus.style.display = 'none'; 
+            this.voiceBtn.classList.remove('active-pulse'); 
+        };
+        
+        this.recognition.onerror = (event) => {
+            console.error("Mobile voice stream error: ", event.error);
+            if (event.error === 'not-allowed') {
+                this.triggerFailure("Mic Perm Denied");
+                alert("Please enable microphone permissions in your mobile browser settings to use voice commands!");
+            } else {
+                this.triggerFailure("Voice Timeout");
+            }
+        };
+
         this.recognition.onresult = (e) => {
-            let text = e.results[0][0].transcript.toLowerCase().replace(/multiply|times/g, '*').replace(/divided by/g, '/').replace(/plus/g, '+').replace(/minus/g, '-').replace(/[^0-9\+\-\*\/\.]/g, '');
-            if (text) { this.expressionState = text; this.executePrimaryEvaluation(); }
+            if (!e.results || !e.results[0]) return;
+            
+            let spokenText = e.results[0][0].transcript.toLowerCase();
+            
+            // Clean mobile pronunciation anomalies into arithmetic tokens
+            spokenText = spokenText.replace(/multiply|times|into/g, '*')
+                                   .replace(/divided by|divide|by/g, '/')
+                                   .replace(/plus|and/g, '+')
+                                   .replace(/minus/g, '-')
+                                   .replace(/space| /g, '')
+                                   .replace(/[^0-9\+\-\*\/\.]/g, ''); 
+            
+            if (spokenText) { 
+                this.expressionState = spokenText; 
+                this.executePrimaryEvaluation(); 
+            } else {
+                this.triggerFailure("Failed Parse");
+            }
         };
     }
 
@@ -311,7 +360,7 @@ document.querySelector('.memory-strip').addEventListener('click', (e) => {
     const btn = e.target.closest('button'); if (btn) AppCalc.executeMemoryAction(btn.dataset.action);
 });
 
-// MOBILE DESIGN STYLE: COLLAPSIBLE SCIENTIFIC DRAWER TOGGLE LISTENER
+// COLLAPSIBLE SCIENTIFIC DRAWER TOGGLE LISTENER
 document.getElementById('scientific-toggle').addEventListener('click', function() {
     const drawer = document.getElementById('scientific-panel-wrapper');
     const textLabel = this.querySelector('.toggle-text');
@@ -330,7 +379,29 @@ document.getElementById('scientific-toggle').addEventListener('click', function(
 
 document.getElementById('angle-toggle').addEventListener('click', () => AppCalc.toggleAngleMode());
 document.getElementById('clear-tape-btn').addEventListener('click', () => AppCalc.clearHistoryTape());
-document.getElementById('voice-trigger').addEventListener('click', () => AppCalc.recognition.start());
+
+// Microphone Permission Voice Dispatcher
+document.getElementById('voice-trigger').addEventListener('click', async function(e) {
+    e.preventDefault();
+    if (!AppCalc.recognition) {
+        alert("Web Speech logic is unpermitted or unavailable inside this container. Try switching to Google Chrome Mobile!");
+        return;
+    }
+    try {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            const permissionCheck = await navigator.mediaDevices.getUserMedia({ audio: true });
+            permissionCheck.getTracks().forEach(track => track.stop());
+        }
+        AppCalc.recognition.start();
+    } catch (err) {
+        try {
+            AppCalc.recognition.start();
+        } catch(retryErr) {
+            AppCalc.triggerFailure("Mic Blocked");
+        }
+    }
+});
+
 document.getElementById('convert-trigger').addEventListener('click', () => AppCalc.processCurrencyConversion());
 document.getElementById('history-toggle').addEventListener('click', () => document.getElementById('history-sidebar').classList.toggle('hidden'));
 document.getElementById('hotkey-toggle').addEventListener('click', () => document.querySelector('.calculator-wrapper').classList.toggle('show-hotkeys'));
